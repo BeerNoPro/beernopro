@@ -1,5 +1,3 @@
 <template>
-    <div>
-        This is users page
-    </div>
+    This is users page
 </template>
