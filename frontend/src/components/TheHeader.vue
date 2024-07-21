@@ -2,7 +2,9 @@
     <div class="container-fuild">
         <div class="row align-items-center box-header">
             <div class="col-1 d-flex d-sm-none align-items-center justify-content-center">
-                <span @click="showDrawerCategory()">X</span>
+                <span @click="showDrawerCategory()">
+                    <ProfileOutlined />
+                </span>
             </div>
 
             <div class="col-10 col-sm-9 d-flex align-content-center align-items-center justify-content-center justify-content-sm-start">
@@ -15,7 +17,9 @@
             </div>
 
             <div class="col-1 d-flex d-sm-none align-items-center justify-content-center">
-                <span @click="showDrawerAdmin()">X</span>
+                <span @click="showDrawerAdmin()">
+                    <UserAddOutlined />
+                </span>
             </div>
         </div>
     </div>
@@ -25,9 +29,7 @@
         title="Danh mục"
         placement="left"
     >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <TheMenu />
     </a-drawer>
 
     <a-drawer
@@ -35,16 +37,25 @@
         title="Admin"
         placement="right"
     >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <p>Tài khoản</p>
+        <p>Đăng xuất</p>
     </a-drawer>
 </template>
 
 <script>
     import { defineComponent, ref } from 'vue';
+    import TheMenu from './TheMenu.vue';
+    import {
+        ProfileOutlined,
+        UserAddOutlined,
+    } from '@ant-design/icons-vue';
 
     export default defineComponent({
+        components: {
+            TheMenu,
+            ProfileOutlined,
+            UserAddOutlined,
+        },
         setup() {
             const openCategory = ref(false);
             const openAdmin    = ref(false);
