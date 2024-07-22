@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController;
 
-class UserStatusController extends Controller
+class UserStatusController extends BaseController
 {
     //
 }

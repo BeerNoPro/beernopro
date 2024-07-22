@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController;
 use App\Services\UserService;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
     protected $userService;
 
     /**
      * [Description for __construct]
      *
-     * @param UserService $userService
+     * @param \App\Services\UserService $userService
      *
      */
     public function __construct(UserService $userService)
@@ -25,7 +26,7 @@ class UserController extends Controller
     /**
      * [Description for index]
      *
-     * @return JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      *
      */
     public function index(): JsonResponse
