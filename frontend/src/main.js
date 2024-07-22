@@ -4,8 +4,10 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
-
+import axios from 'axios'
 import {
+    Table,
+    Card,
     Drawer,
     Button,
     List,
@@ -17,10 +19,14 @@ import 'ant-design-vue/dist/reset.css'
 import 'bootstrap/dist/css/bootstrap-grid.min.css'
 import 'bootstrap/dist/css/bootstrap-utilities.min.css'
 
+window.axios = axios;
+
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
+app.use(Table)
+app.use(Card)
 app.use(Drawer)
 app.use(Button)
 app.use(List)
