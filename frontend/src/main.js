@@ -6,6 +6,7 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 import {
+    Pagination,
     Table,
     Card,
     Drawer,
@@ -25,6 +26,7 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
+app.use(Pagination)
 app.use(Table)
 app.use(Card)
 app.use(Drawer)
