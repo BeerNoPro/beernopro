@@ -2,7 +2,12 @@
     <a-card title="Tài khoản" style="width: 100%">
         <div class="row">
             <div class="col-12">
-                <a-table :dataSource="users" :columns="columns" :scroll="{ x: 576 }">
+                <a-table
+                    :dataSource="users"
+                    :columns="columns"
+                    :scroll="{ x: 576 }"
+                    :pagination="false"
+                >
                     <template #bodyCell="{ column, index, record }">
                         <template v-if="column.key === 'stt'">
                             <span>{{ index + 1 }}</span>
@@ -20,8 +25,13 @@
                             <a-button type="primary" danger>Delete</a-button>
                         </template>
                     </template>
-                    <!-- <a-pagination v-model:current="current" :total="500" /> -->
                 </a-table>
+                <a-pagination
+                    v-model:current="current"
+                    :total="totalPage"
+                    :defaultPageSize="pageSize"
+                    class="mt-4 d-flex justify-content-center"
+                />
             </div>
         </div>
     </a-card>
@@ -41,6 +51,10 @@ export default defineComponent({
         store.onSelectedKeys(['admin-users']);
 
         const users = ref([]);
+        const current = ref(1);
+        const totalPage = ref(1);
+        const pageSize = ref(5);
+
         const columns = [
             {
                 title: "Stt",
@@ -77,14 +91,21 @@ export default defineComponent({
         const getUsers = async () => {
             try {
                 const response = await axios.get(url_get_users);
-                console.log('response: ', response.data.data);
+                const resData = response.data.data;
 
-                users.value = response.data.data.data;
+                users.value = resData.data;
+                totalPage.value = resData.total;
+                current.value = resData.current_page;
+                pageSize.value = 2;
 
-                response.data.data.data.map((el) => {
+                resData.data.map((el) => {
                     let date = moment(new Date(el.created_at));
                     el.created_at = date.format("DD/MM/YYYY HH:mm:ss")
                 })
+
+                pageSize.value = 2;
+
+                console.log('response: ', response);
             } catch (error) {
                 console.log('error: ', error);
             }
@@ -92,11 +113,16 @@ export default defineComponent({
 
         getUsers();
 
-        const current = ref(6);
+        // console.log('current: ', current);
+        // console.log('users: ', users);
+        console.log('pageSize: ', pageSize.value);
 
         return {
             users,
-            columns
+            columns,
+            totalPage,
+            current,
+            pageSize,
         }
     }
 })
