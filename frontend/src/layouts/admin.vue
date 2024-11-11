@@ -2,7 +2,7 @@
     <TheHeader />
     <div class="container-fluid mt-3">
         <div class="row">
-            <div class="col-sm-3 d-none d-sm-flex">
+            <div class="col-sm-3 d-none d-sm-flex box-sibar">
                 <a-list bordered class="sider-bar">
                     <template #header>
                         <div>BẢNG ĐIỀU KHIỂN</div>
@@ -30,6 +30,9 @@
 </script>
 
 <style scoped>
+    .box-sibar {
+        height: 90vh;
+    }
     .sider-bar {
         width: 100%;
     }

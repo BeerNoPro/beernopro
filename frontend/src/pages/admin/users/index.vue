@@ -30,6 +30,8 @@
                     v-model:current="current"
                     :total="totalPage"
                     :defaultPageSize="pageSize"
+                    :showTotal="showTotal"
+                    :onShowSizeChange="showSizeChange"
                     class="mt-4 d-flex justify-content-center"
                 />
             </div>
@@ -96,14 +98,12 @@ export default defineComponent({
                 users.value = resData.data;
                 totalPage.value = resData.total;
                 current.value = resData.current_page;
-                pageSize.value = 2;
+                // pageSize.value = ref(2);
 
                 resData.data.map((el) => {
                     let date = moment(new Date(el.created_at));
                     el.created_at = date.format("DD/MM/YYYY HH:mm:ss")
                 })
-
-                pageSize.value = 2;
 
                 console.log('response: ', response);
             } catch (error) {
@@ -111,11 +111,21 @@ export default defineComponent({
             }
         };
 
+        const showTotal = (a, b) => {
+            // console.log('a: ', a);
+            // console.log('b: ', b);
+        }
+
+        const showSizeChange = (a, b) => {
+            console.log('a: ', a);
+            console.log('b: ', b);
+        }
+
         getUsers();
 
-        // console.log('current: ', current);
-        // console.log('users: ', users);
-        console.log('pageSize: ', pageSize.value);
+        console.log('current: ', current);
+        console.log('users: ', users);
+        // console.log('pageSize: ', pageSize.value);
 
         return {
             users,
@@ -123,6 +133,8 @@ export default defineComponent({
             totalPage,
             current,
             pageSize,
+            showSizeChange,
+            showTotal,
         }
     }
 })
