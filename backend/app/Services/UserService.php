@@ -28,7 +28,7 @@ class UserService extends BaseService
                 'departments.name as department_name',
                 'users_status.name as status_name',
             )
-            ->paginate(2);
+            ->paginate(5);
 
             return $data->toArray();
         } catch (\Throwable $th) {

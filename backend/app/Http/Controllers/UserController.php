@@ -44,7 +44,6 @@ class UserController extends BaseController
 
             return response()->json([
                 'status'     => 404,
-                'data'       => $user,
                 'message'    => 'Get users not found'
             ]);
         }
