@@ -1,0 +1,139 @@
+# version: "3.8"
+# # Phiên bản cấu hình Docker Compose.
+
+# services:
+#     app:
+#         build:
+#             context: ./php
+#             # Sử dụng Dockerfile trong thư mục `docker/php` để build image cho PHP.
+#         container_name:
+#             laravel_app
+#             # Đặt tên container là `laravel_app`.
+#         working_dir:
+#             /var/www
+#             # Thư mục làm việc mặc định trong container là `/var/www`.
+#         volumes:
+#             - .:/var/www
+#             # Gắn thư mục hiện tại (mã nguồn Laravel) vào `/var/www` trong container.
+#         networks:
+#             - laravel_net
+#             # Container này kết nối với mạng `laravel_net`.
+#         environment:
+#             - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
+#             # Biến môi trường để bật kiểm tra thời gian chỉnh sửa file trong opcache (hữu ích trong phát triển).
+
+#     web:
+#         image:
+#             nginx:latest
+#             # Sử dụng image NGINX mới nhất.
+#         container_name:
+#             laravel_web
+#             # Đặt tên container là `laravel_web`.
+#         ports:
+#             - "8080:80"
+#             # Kết nối cổng 8080 của máy chủ với cổng 80 của container (truy cập qua localhost:8080).
+#         volumes:
+#             - .:/var/www
+#             # Gắn thư mục hiện tại (mã nguồn Laravel) vào `/var/www` trong container.
+#             - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+#             # Gắn file cấu hình nginx (default.conf) vào thư mục cấu hình của NGINX trong container.
+#         depends_on:
+#             - app
+#             # Đảm bảo container NGINX chỉ chạy sau khi container `app` khởi động thành công.
+#         networks:
+#             - laravel_net
+#             # Container này kết nối với mạng `laravel_net`.
+
+#     db:
+#         image:
+#             mysql:8.0
+#             # Sử dụng image MySQL phiên bản 8.0.
+#         container_name:
+#             laravel_db
+#             # Đặt tên container là `laravel_db`.
+#         ports:
+#             - "3306:3306"
+#             # Kết nối cổng 3306 của máy chủ với cổng 3306 của container (truy cập database).
+#         environment:
+#             MYSQL_ROOT_PASSWORD:
+#                 root
+#                 # Mật khẩu cho tài khoản root của MySQL.
+#             MYSQL_DATABASE:
+#                 laravel
+#                 # Tạo database mặc định tên `laravel`.
+#             MYSQL_USER:
+#                 laravel
+#                 # Tạo user `laravel`.
+#             MYSQL_PASSWORD:
+#                 secret
+#                 # Mật khẩu của user `laravel`.
+#         volumes:
+#             - db_data:/var/lib/mysql
+#             # Gắn dữ liệu MySQL vào volume để đảm bảo dữ liệu không bị mất khi container bị xóa.
+#         networks:
+#             - laravel_net
+#             # Container này kết nối với mạng `laravel_net`.
+
+# networks:
+#     laravel_net:
+#         driver: bridge
+#         # Tạo một mạng bridge (mặc định) để các container có thể giao tiếp với nhau.
+
+# volumes:
+#     db_data:
+#     # Tạo volume `db_data` để lưu trữ dữ liệu của MySQL.
+
+# version: '2.29'
+
+services:
+    backend_web:
+        image: nginx:latest
+        container_name: backend_web
+        working_dir: /var/www/beernopro/backend
+        ports:
+            - "8080:80"
+        volumes:
+            - .:/var/www/beernopro/backend #html
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - backend_app
+        networks:
+            - laravel-network
+
+    backend_app:
+        build:
+            context: ./php
+            dockerfile: Dockerfile
+        container_name: backend_app
+        volumes:
+            - .:/var/www/beernopro/backend #html
+        environment:
+            - APP_ENV=local
+            - APP_DEBUG=true
+        depends_on:
+            - backend_db
+        networks:
+            - laravel-network
+
+    backend_db:
+        image: mysql:8.0
+        container_name: backend_db
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: beernopro
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+        volumes:
+            - db_data:/var/lib/mysql
+        networks:
+            - laravel-network
+
+volumes:
+    db_data:
+
+networks:
+    laravel-network:
+        driver: bridge
+        # Tạo một mạng bridge (mặc định) để các container có thể giao tiếp với nhau.
