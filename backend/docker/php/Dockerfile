@@ -20,7 +20,8 @@ WORKDIR /var/www
 COPY . .
 
 # Cấp quyền cho thư mục lưu trữ
-RUN chown -R www-data:www-data /var/www \ && chmod -R 755 /var/www
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www
 
 # Khởi chạy PHP-FPM
 CMD ["php-fpm"]
